@@ -4,7 +4,7 @@ Extend Browser library with a new "Wait For Download With Filename" keyword
 By default, the keyword "Wait For Download" from Browser library is downloading the file
 with a GUID name, as opposed with manual download when the filename is suggested by the browser.
 
-This is a sample keyword in Javascript, that will extend Browser library as explained on [Browser](https://marketsquare.github.io/robotframework-browser) project page.
+This is a sample keyword in Javascript, that will extend Browser library as explained on [Browser](https://github.com/MarketSquare/robotframework-browser) project page.
 
 download.js
 
