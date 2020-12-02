@@ -28,7 +28,6 @@ download.robot
 Library         Browser  jsextension=${CURDIR}/download.js
 Library         String
 Library         OperatingSystem
-Library         Dialogs
 
 *** Test Cases ***
 Download Suggested Filename
