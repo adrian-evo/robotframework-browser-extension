@@ -1,43 +1,19 @@
 # robotframework-browser-extension
-Extend Browser library with a new "Wait For Download With Filename" keyword
+Extend Browser library with new custom keywords, as explained on [Browser](https://github.com/MarketSquare/robotframework-browser) project page.
 
-By default, the keyword "Wait For Download" from Browser library is downloading the file
+- `Wait For Download With Filename`
+
+By default, the keyword `Wait For Download` from Browser library is downloading the file
 with a GUID name, as opposed with manual download when the filename is suggested by the browser.
 
-This is a sample keyword in Javascript, that will extend Browser library as explained on [Browser](https://github.com/MarketSquare/robotframework-browser) project page.
+- `Wait For Navigation  Url  [timeout  [waitUntil]]`
 
-download.js
+Implement Wait for navigation function that is missing from Browser library and available in Playwright
+Optional arguments: Url (absolute path or RegExp between slashes, e.g. /.*signin.*/), timeout, waitUntil
 
-```JavaScript
-async function waitForDownloadWithFilename(page) {
-	const [ download ] = await Promise.all([
-  		page.waitForEvent('download'),
-	]);
-	const path = await download.path();
-	const expectedName = await download.suggestedFilename();
-	return [path, expectedName]
-}
-exports.__esModule = true;
-exports.waitForDownloadWithFilename = waitForDownloadWithFilename;
-```
+- `Go To Document  Url`
 
-download.robot
+Go To an Url that just return a downloaded file instead of loading a page. Original keyword is failing with ERR_ABORTED in such case.
+Can be combined with the above keyword to get downloaded filename.
 
-```RobotFramework
-*** Settings ***
-Library         Browser  jsextension=${CURDIR}/download.js
-Library         String
-Library         OperatingSystem
-
-*** Test Cases ***
-Download Suggested Filename
-    New Browser    chromium     headless=false    downloadsPath=${CURDIR}
-    New Context    acceptDownloads=True
-    New Page       https://mypage.withdownloads
-
-    ${dl_promise}    Promise To  Wait For Download With Filename
-    Click            \#file_download
-    ${file_path}=    Wait For  ${dl_promise}
-    
-    ${path}  Get Regexp Matches  ${file_path}[0]  .*\\\\
-    Move File    ${file_path}[0]  ${path}[0]${file_path}[1]
+download.robot file contains test cases that exemplifies the usage of the above custom keywords.
